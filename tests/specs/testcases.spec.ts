@@ -3,7 +3,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { TestCasesPage } from '../pages/TestCasesPage';
 import testData from '../fixtures/testData.json';
 
-test.describe('Test Cases Management', () => {
+test.describe.serial('Test Cases Management', () => {
   let loginPage: LoginPage;
   let testCasesPage: TestCasesPage;
 

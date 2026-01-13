@@ -118,11 +118,10 @@ export class TestCasesPage extends BasePage {
       const title = titles[i];
       const id = (i + 1).toString();
       const isEven = parseInt(id) % 2 === 0;
-      const expectedDescription = `This description belongs to `;
+      const expectedDescription = `This description belongs to ${id} which is ${isEven ? 'even' : 'odd'}.`;
       
       // Open test case by exact title
       await this.page.locator('.preview-card-title-value').filter({ hasText: title }).click();
-      await this.page.waitForTimeout(2000);
       await this.page.getByPlaceholder('Title').waitFor({ state: 'visible' });
       
       const currentDescription = await this.page.getByPlaceholder('Description').inputValue();
@@ -133,9 +132,11 @@ export class TestCasesPage extends BasePage {
         await this.page.goBack();
       }
       
-      await this.page.waitForTimeout(2000);
+     // 
+     
+      await this.page.waitForTimeout(3000);
       await this.navigateToTestCases();
-      await this.page.waitForTimeout(2000);
+      
     }
   }
 
