@@ -1,0 +1,81 @@
+{
+  "validUser": {
+    "email": "nasveta.camdzic@htecgroup.com",
+    "password": "Test1234!!"
+  },
+  "invalidUsers": [
+    {
+      "email": "invalid@email.com",
+      "password": "Test1234!!"
+    },
+    {
+      "email": "nasveta.camdzic@htecgroup.com",
+      "password": "wrongpassword"
+    },
+    {
+      "email": "",
+      "password": ""
+    }
+  ],
+  "testCases": [
+    {
+      "title": "Login Functionality Test",
+      "description": "Verify user can login with valid credentials",
+      "expectedResult": "User should be successfully logged in and redirected to dashboard",
+      "testSteps": [
+        "Navigate to login page",
+        "Enter valid email address",
+        "Enter valid password",
+        "Click Login button",
+        "Verify successful login"
+      ]
+    },
+    {
+      "title": "Create New Test Case",
+      "description": "Verify user can create a new test case with multiple steps",
+      "expectedResult": "Test case should be created successfully with all steps",
+      "testSteps": [
+        "Navigate to Test Cases page",
+        "Click New Test Case button",
+        "Fill in all required fields",
+        "Add multiple test steps",
+        "Submit the form"
+      ]
+    },
+    {
+      "title": "Navigation Test",
+      "description": "Verify all navigation links work correctly",
+      "expectedResult": "All pages should load without errors",
+      "testSteps": [
+        "Click on Dashboard link",
+        "Click on Test Cases link",
+        "Click on Profile link",
+        "Verify each page loads correctly"
+      ]
+    },
+    {
+      "title": "Form Validation Test",
+      "description": "Verify form validation works for required fields",
+      "expectedResult": "Validation errors should be displayed for empty required fields",
+      "testSteps": [
+        "Open new test case form",
+        "Leave required fields empty",
+        "Click Submit button",
+        "Verify validation messages appear"
+      ]
+    },
+    {
+      "title": "Automated Test Case Creation",
+      "description": "Verify automated test case can be created and marked as automated",
+      "expectedResult": "Test case should be created with automated flag enabled",
+      "testSteps": [
+        "Navigate to Test Cases page",
+        "Click New Test Case button",
+        "Fill all required fields",
+        "Add test steps",
+        "Enable Automated toggle",
+        "Submit the form"
+      ]
+    }
+  ]
+}
