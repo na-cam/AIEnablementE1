@@ -37,6 +37,7 @@ export class TestCasesPage extends BasePage {
 
   async submitTestCase() {
     await this.page.getByText('Submit').click();
+    await this.page.waitForTimeout(500);
   }
 
   async addMultipleTestSteps(steps: string[]) {
@@ -67,7 +68,8 @@ export class TestCasesPage extends BasePage {
 
   async editTitle(id: string) {
     const isEven = parseInt(id) % 2 === 0;
-    const newTitle = `The ${id} of this use case is ${isEven ? 'even' : 'odd'}.`;
+    const uniqueSuffix = Date.now();
+    const newTitle = `The ${id} of this use case is ${isEven ? 'even' : 'odd'} - ${uniqueSuffix}.`;
     await this.page.getByPlaceholder('Title').fill('');
     await this.page.getByPlaceholder('Title').fill(newTitle);
   }
@@ -92,9 +94,12 @@ export class TestCasesPage extends BasePage {
     const count = await testStepInputs.count();
     
     for (let i = 0; i < count; i++) {
+      const input = testStepInputs.nth(i);
       const newStepText = `This test step ${i + 1} belongs to ${id} which is ${isEven ? 'even' : 'odd'}.`;
-      await testStepInputs.nth(i).fill('');
-      await testStepInputs.nth(i).fill(newStepText);
+      
+      await expect(input).toBeVisible();
+      await expect(input).toBeEnabled();
+      await input.fill(newStepText);
     }
   }
 
@@ -107,36 +112,40 @@ export class TestCasesPage extends BasePage {
   }
 
   async editAllTestCases() {
-    await this.page.waitForTimeout(2000);
+    const getCards = () => this.page.locator('.preview-card-title-value');
     
-    // Take snapshot of all test case titles
-    const titleElements = this.page.locator('.preview-card-title-value');
-    const titles = await titleElements.allTextContents();
+    await this.navigateToTestCases();
+    await expect(getCards().first()).toBeVisible();
     
-    // Iterate through each title
-    for (let i = 0; i < titles.length; i++) {
-      const title = titles[i];
-      const id = (i + 1).toString();
+    const initialCount = await getCards().count();
+    let index = 1;
+    
+    while (index <= initialCount) {
+      const firstCard = getCards().first();
+      await expect(firstCard).toBeVisible();
+      
+      await Promise.all([
+        this.page.waitForURL('**/edit-testcase/*', { timeout: 10000 }),
+        firstCard.click()
+      ]);
+      
+      const titleInput = this.page.getByPlaceholder('Title');
+      await expect(titleInput).toBeVisible();
+      
+      const id = index.toString();
       const isEven = parseInt(id) % 2 === 0;
       const expectedDescription = `This description belongs to ${id} which is ${isEven ? 'even' : 'odd'}.`;
-      
-      // Open test case by exact title
-      await this.page.locator('.preview-card-title-value').filter({ hasText: title }).click();
-      await this.page.getByPlaceholder('Title').waitFor({ state: 'visible' });
       
       const currentDescription = await this.page.getByPlaceholder('Description').inputValue();
       
       if (currentDescription !== expectedDescription) {
         await this.editAllFields(id);
-      } else {
-        await this.page.goBack();
       }
       
-     // 
-     
-      await this.page.waitForTimeout(3000);
       await this.navigateToTestCases();
+      await expect(getCards().first()).toBeVisible();
       
+      index++;
     }
   }
 
