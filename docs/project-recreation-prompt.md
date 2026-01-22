@@ -13,7 +13,7 @@ Create a complete Playwright TypeScript test automation framework for the QA San
 
 ### Test Application Details
 - **URL**: https://qa-sandbox.ni.htec.rs/login
-- **Test Credentials**: nasveta.camdzic@htecgroup.com / Test1234!!
+- **Test Credentials**: nasveta.camdzic+01@htecgroup.com / Test1234!!
 
 ### Page Objects Required
 
@@ -65,19 +65,25 @@ Create a complete Playwright TypeScript test automation framework for the QA San
 - Use exact text matching for reliable element identification
 
 #### Edit Test Cases Logic
-- Take snapshot of all test case titles using '.preview-card-title-value'
-- Iterate through titles using exact text matching with filter({ hasText: title })
+- Count initial test cases before iteration to avoid infinite loops
+- Always click first available card (index-based with safety limit)
+- Use Promise.all to wait for URL navigation to **/edit-testcase/*
+- Add unique timestamp suffix to titles to prevent duplicate validation errors
 - Check current description against expected format
 - Only edit test cases that don't match expected description pattern
-- Apply even/odd logic based on sequential ID (i + 1)
+- Apply even/odd logic based on sequential ID (index + 1)
+- Ensure test step inputs are visible and enabled before filling
+- Use simplified submit with minimal 500ms delay
 - Navigate back to test cases list after each edit operation
+- Use state-based waits, avoid arbitrary timeouts where possible
 
 #### Configuration Requirements
+- Test timeout: 60 seconds for complex operations
 - Parallel execution enabled
-- Retry logic for flaky tests
+- Retry logic for flaky tests (2 retries in CI)
 - Multiple browser support (Chromium, Firefox, WebKit)
 - Screenshot and video capture on failure
-- Custom timeout configurations
+- Trace on first retry for debugging
 
 #### Reporting
 - HTML report with detailed test results
@@ -128,10 +134,14 @@ Create JSON fixture with:
 - Minimal but effective comments
 
 ### Advanced Features
-- Smart test case editing with conditional logic
-- Dynamic test data generation
-- Robust element interaction handling
+- Smart test case editing with conditional logic and unique title generation
+- Index-based iteration with safety limits to prevent infinite loops
+- Navigation synchronization using Promise.all
+- Visibility and enabled state checks for dynamic form inputs
+- Minimal delays to avoid UI overlay interference
+- Robust element interaction handling with state-based waits
 - Comprehensive test cleanup procedures
+- Serial test execution for test case management tests
 - Flexible test execution options
 
 ## Success Criteria

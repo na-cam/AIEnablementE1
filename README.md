@@ -61,24 +61,31 @@ run-tests.bat
 
 - **Architecture**: Page Object Model (POM)
 - **Locators**: Semantic locators (getByPlaceholder, getByText, getByRole)
-- **Advanced Editing**: Title snapshots, conditional updates, even/odd logic
+- **Advanced Editing**: Index-based iteration, unique titles, conditional updates, even/odd logic
 - **Smart Detection**: Only edits test cases that need modification
+- **Navigation Sync**: Promise.all for URL navigation, state-based waits
+- **Stability**: Visibility and enabled checks, minimal delays, no Toastify dependencies
 - **Reporting**: HTML + JUnit XML with screenshots/videos on failure
-- **Parallel Execution**: Faster test runs
-- **Retry Logic**: Handles flaky tests
+- **Parallel Execution**: Faster test runs with configurable workers
+- **Retry Logic**: Handles flaky tests in CI environments
 - **Cross-browser**: Configurable browser support
+- **Test Timeout**: 60s to accommodate complex operations
 
-## Advanced Edit Functionality
+### Advanced Edit Functionality
 
 ### Smart Test Case Editing
-- Takes snapshot of all test case titles before iteration
-- Uses exact title matching to avoid stale element references
+- Counts initial test cases and iterates through them by index
+- Always clicks first available card to avoid stale element issues
+- Waits for URL navigation to edit page before interacting with form
 - Applies conditional editing based on description format validation
 - Implements even/odd logic for dynamic content generation
-- Ensures all test cases are processed regardless of count
+- Adds unique timestamp suffix to titles to prevent duplicate validation errors
+- Uses visibility and enabled checks for test step inputs
+- Simplified submit with minimal delay to avoid Toastify overlay interference
+- Ensures proper navigation back to test cases list after each edit
 
 ### Edit Patterns
-- **Titles**: "The [id] of this use case is even/odd"
+- **Titles**: "The [id] of this use case is even/odd - [timestamp]"
 - **Descriptions**: "This description belongs to [id] which is even/odd"
 - **Expected Results**: "This expected result belongs to [id] which is even/odd"
 - **Test Steps**: "This test step [stepNumber] belongs to [id] which is even/odd"
@@ -100,7 +107,8 @@ run-tests.bat
 ```
 
 ## Test Application
-- **URL**: https://qasandbox.dev
+- **URL**: https://qa-sandbox.ni.htec.rs/login
+- **Credentials**: nasveta.camdzic+01@htecgroup.com / Test1234!!
 
 
 ## Reports Location
